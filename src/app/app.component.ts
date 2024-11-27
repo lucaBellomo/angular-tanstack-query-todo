@@ -13,17 +13,19 @@ import { TodoFormComponent } from './components/todo-form.component';
       <app-todo-list></app-todo-list>
     </div>
   `,
-  styles: [`
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-  `]
+  styles: [
+    `
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+    `,
+  ],
 })
 export class AppComponent {}

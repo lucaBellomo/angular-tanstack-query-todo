@@ -2,12 +2,12 @@
   "todos": [
     {
       "id": "50f7",
-      "title": "test",
-      "completed": false
+      "title": "Check Tanstack Query",
+      "completed": true
     },
     {
       "id": "4867",
-      "title": "Todo3",
+      "title": "Create a todo test app",
       "completed": true
     }
   ]
