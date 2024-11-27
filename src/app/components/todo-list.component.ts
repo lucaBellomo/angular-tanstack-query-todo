@@ -16,6 +16,7 @@ import TodoRepository from '../repositories/todo.repository';
       <ul>
         @for (todo of this.todoRepository.todoQuery.data(); track todo.id) {
           <li>
+            <span>{{ todo.id }}</span>
             <span [class.completed]="todo.completed">
               {{ todo.title }}
             </span>
@@ -26,9 +27,7 @@ import TodoRepository from '../repositories/todo.repository';
                 (change)="this.todoRepository.toggleTodoMutation.mutate(todo)"
               />
               <button
-                (click)="
-                  this.todoRepository.deleteTodoMutation.mutate(todo.id!)
-                "
+                (click)="this.todoRepository.deleteTodoMutation.mutate(todo)"
               >
                 Delete
               </button>
