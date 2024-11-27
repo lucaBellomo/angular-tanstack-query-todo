@@ -8,9 +8,9 @@ import { TodoFormComponent } from './components/todo-form.component';
   imports: [TodoListComponent, TodoFormComponent],
   template: `
     <div class="container">
-      <h1>ToDo</h1>
-      <app-todo-form></app-todo-form>
-      <app-todo-list></app-todo-list>
+      <h1>todo</h1>
+      <app-todo-form />
+      <app-todo-list />
     </div>
   `,
   styles: [

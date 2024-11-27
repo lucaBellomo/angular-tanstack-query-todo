@@ -43,6 +43,7 @@ import TodoRepository from '../repositories/todo.repository';
         color: white;
         border: none;
         cursor: pointer;
+        border-radius: 3px;
       }
       button:disabled {
         background-color: #cccccc;

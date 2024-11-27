@@ -59,6 +59,7 @@ import TodoRepository from '../repositories/todo.repository';
         border: none;
         padding: 5px 10px;
         cursor: pointer;
+        border-radius: 3px;
       }
 
       .loader {
