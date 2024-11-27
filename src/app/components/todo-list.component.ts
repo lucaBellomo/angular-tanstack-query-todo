@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { TodoService, Todo } from '../services/todo.service';
+import TodoRepository from '../repositories/todo.repository';
+import {Todo, TodoService} from '../services/todo.service';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div *ngIf="query.isLoading()">Loading...</div>
-    <div *ngIf="query.isError()">Error: {{ query.error() }}</div>
+    <div *ngIf="this.todoRepository.todoQuery.isLoading()">Loading...</div>
+    <div *ngIf="this.todoRepository.todoQuery.isError()">Error: {{ this.todoRepository.todoQuery.error() }}</div>
 
-    <ul *ngIf="query.isSuccess()">
-      <li *ngFor="let todo of query.data()">
+    <ul *ngIf="this.todoRepository.todoQuery.isSuccess()">
+      <li *ngFor="let todo of this.todoRepository.todoQuery.data()">
         <span [class.completed]="todo.completed">
           {{ todo.title }}
         </span>
@@ -20,9 +20,9 @@ import { TodoService, Todo } from '../services/todo.service';
           <input
             type="checkbox"
             [checked]="todo.completed"
-            (change)="toggleTodo(todo)"
+            (change)="this.toggleTodo(todo)"
           >
-          <button (click)="deleteTodo(todo.id!)">Delete</button>
+          <button (click)="this.deleteTodo(todo.id!)">Delete</button>
         </div>
       </li>
     </ul>
@@ -50,23 +50,19 @@ import { TodoService, Todo } from '../services/todo.service';
   `]
 })
 export class TodoListComponent {
+  todoRepository = inject(TodoRepository);
   private todoService = inject(TodoService);
-
-  query = injectQuery(() => ({
-    queryKey: ['todos'],
-    queryFn: () => this.todoService.getTodos().toPromise()
-  }));
 
   toggleTodo(todo: Todo) {
     const updatedTodo = { ...todo, completed: !todo.completed };
     this.todoService.updateTodo(updatedTodo).subscribe(() => {
-      this.query.refetch();
+      this.todoRepository.todoQuery.refetch();
     });
   }
 
   deleteTodo(id: number) {
     this.todoService.deleteTodo(id).subscribe(() => {
-      this.query.refetch();
+      this.todoRepository.todoQuery.refetch();
     });
   }
 }
