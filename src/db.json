@@ -8,12 +8,12 @@
     {
       "id": "8293",
       "title": "Create TODO app",
-      "completed": false
+      "completed": true
     },
     {
-      "id": "c593",
-      "title": "sdffasfsaf",
-      "completed": false
+      "id": "f054",
+      "title": "implement optimistic ui",
+      "completed": true
     }
   ]
 }

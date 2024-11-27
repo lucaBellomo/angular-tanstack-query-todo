@@ -6,7 +6,7 @@ import TodoRepository from '../repositories/todo.repository';
   standalone: true,
   template: `
     @if (this.todoRepository.todoQuery.isLoading()) {
-      <div>Loading...</div>
+      <span class="loader"></span>
     }
     @if (this.todoRepository.todoQuery.isError()) {
       Error: {{ this.todoRepository.todoQuery.error() }}
@@ -43,6 +43,7 @@ import TodoRepository from '../repositories/todo.repository';
         text-decoration: line-through;
         color: gray;
       }
+
       li {
         display: flex;
         justify-content: space-between;
@@ -50,6 +51,7 @@ import TodoRepository from '../repositories/todo.repository';
         padding: 10px;
         border-bottom: 1px solid #eee;
       }
+
       button {
         margin-left: 10px;
         background-color: #ff4444;
@@ -57,6 +59,43 @@ import TodoRepository from '../repositories/todo.repository';
         border: none;
         padding: 5px 10px;
         cursor: pointer;
+      }
+
+      .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        border-top: 4px solid #53818d;
+        border-right: 4px solid transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+
+      .loader::after {
+        content: '';
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border-left: 4px solid #ff3d00;
+        border-bottom: 4px solid transparent;
+        animation: rotation 0.5s linear infinite reverse;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     `,
   ],

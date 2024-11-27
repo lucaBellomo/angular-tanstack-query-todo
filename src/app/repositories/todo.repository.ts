@@ -15,7 +15,6 @@ export default class TodoRepository {
   todoQuery = injectQuery(() => ({
     queryKey: ['todos'],
     queryFn: () => firstValueFrom(this.todoService.getTodos()),
-    placeholderData: [{ id: 1, title: 'Todo', completed: false }],
   }));
 
   toggleTodoMutation = injectMutation(() => ({
@@ -81,7 +80,7 @@ export default class TodoRepository {
       const previousTodos = this.todoQuery.data() || [];
 
       // Optimistically remove the todo
-      this.queryClient.setQueryData(['todos'], [todo, ...previousTodos]);
+      this.queryClient.setQueryData(['todos'], [...previousTodos, todo]);
 
       // Return context for potential rollback
       return { previousTodos };
