@@ -3,7 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { provideQueryClient } from '@tanstack/angular-query-experimental';
+import {
+  provideTanStackQuery,
+  withDevtools,
+} from '@tanstack/angular-query-experimental';
 import { QueryClient } from '@tanstack/query-core';
 
 export const appConfig: ApplicationConfig = {
@@ -11,6 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-    provideQueryClient(new QueryClient()),
+    provideTanStackQuery(new QueryClient(), withDevtools()),
   ],
 };
