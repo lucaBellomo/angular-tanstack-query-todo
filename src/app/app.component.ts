@@ -1,12 +1,29 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { TodoListComponent } from './components/todo-list.component';
+import { TodoFormComponent } from './components/todo-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [TodoListComponent, TodoFormComponent],
+  template: `
+    <div class="container">
+      <h1>Angular Tanstack Query Todo App</h1>
+      <app-todo-form></app-todo-form>
+      <app-todo-list></app-todo-list>
+    </div>
+  `,
+  styles: [`
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+  `]
 })
-export class AppComponent {
-  title = 'angular-tanstack-query';
-}
+export class AppComponent {}
