@@ -5,10 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Todo, TodoService } from '../services/todo.service';
-import { injectMutation } from '@tanstack/angular-query-experimental';
-import { firstValueFrom } from 'rxjs';
-import { QueryClient } from '@tanstack/query-core';
+import TodoRepository from '../repositories/todo.repository';
 
 @Component({
   selector: 'app-todo-form',
@@ -19,9 +16,13 @@ import { QueryClient } from '@tanstack/query-core';
       <input type="text" formControlName="title" placeholder="Enter todo" />
       <button
         type="submit"
-        [disabled]="todoForm.invalid || addTodoMutation.isPending()"
+        [disabled]="
+          todoForm.invalid || todoRepository.addTodoMutation.isPending()
+        "
       >
-        {{ addTodoMutation.isPending() ? 'Adding...' : 'Add Todo' }}
+        {{
+          todoRepository.addTodoMutation.isPending() ? 'Adding...' : 'Add Todo'
+        }}
       </button>
     </form>
   `,
@@ -52,9 +53,8 @@ import { QueryClient } from '@tanstack/query-core';
 })
 export class TodoFormComponent {
   todoForm: FormGroup;
-  private todoService = inject(TodoService);
   private fb = inject(FormBuilder);
-  private queryClient = inject(QueryClient);
+  public todoRepository = inject(TodoRepository);
 
   constructor() {
     this.todoForm = this.fb.group({
@@ -62,22 +62,13 @@ export class TodoFormComponent {
     });
   }
 
-  addTodoMutation = injectMutation(() => ({
-    mutationFn: (todo: Todo) => firstValueFrom(this.todoService.addTodo(todo)),
-    onSuccess: () => {
-      this.todoForm.reset();
-      this.queryClient.invalidateQueries({
-        queryKey: ['todos'],
-      });
-    },
-  }));
-
   onSubmit() {
     if (this.todoForm.valid) {
-      this.addTodoMutation.mutate({
+      this.todoRepository.addTodoMutation.mutate({
         title: this.todoForm.value.title,
         completed: false,
       });
+      this.todoForm.reset();
     }
   }
 }

@@ -73,4 +73,26 @@ export default class TodoRepository {
       this.todoQuery.refetch();
     },
   }));
+
+  addTodoMutation = injectMutation(() => ({
+    mutationFn: (todo: Todo) => firstValueFrom(this.todoService.addTodo(todo)),
+    onMutate: (todo: Todo) => {
+      // Store the current todos for potential rollback
+      const previousTodos = this.todoQuery.data() || [];
+
+      // Optimistically remove the todo
+      this.queryClient.setQueryData(['todos'], [todo, ...previousTodos]);
+
+      // Return context for potential rollback
+      return { previousTodos };
+    },
+    onError: (error, todo, context) => {
+      // Rollback to previous state if mutation fails
+      this.queryClient.setQueryData(['todos'], context?.previousTodos || []);
+    },
+    onSettled: () => {
+      // Refetch to ensure consistency
+      this.todoQuery.refetch();
+    },
+  }));
 }
