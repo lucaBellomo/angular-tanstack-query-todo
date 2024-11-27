@@ -17,7 +17,7 @@ export class TodoService {
   constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
-    return interval(1000).pipe(
+    return interval(200).pipe(
       switchMap(() => this.http.get<Todo[]>(this.apiUrl)),
     );
   }

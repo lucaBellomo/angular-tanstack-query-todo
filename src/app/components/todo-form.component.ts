@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -8,13 +7,13 @@ import {
 } from '@angular/forms';
 import { Todo, TodoService } from '../services/todo.service';
 import { injectMutation } from '@tanstack/angular-query-experimental';
-import TodoRepository from '../repositories/todo.repository';
 import { firstValueFrom } from 'rxjs';
+import { QueryClient } from '@tanstack/query-core';
 
 @Component({
   selector: 'app-todo-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   template: `
     <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
       <input type="text" formControlName="title" placeholder="Enter todo" />
@@ -55,7 +54,7 @@ export class TodoFormComponent {
   todoForm: FormGroup;
   private todoService = inject(TodoService);
   private fb = inject(FormBuilder);
-  private todoRepository = inject(TodoRepository);
+  private queryClient = inject(QueryClient);
 
   constructor() {
     this.todoForm = this.fb.group({
@@ -67,7 +66,9 @@ export class TodoFormComponent {
     mutationFn: (todo: Todo) => firstValueFrom(this.todoService.addTodo(todo)),
     onSuccess: () => {
       this.todoForm.reset();
-      this.todoRepository.todoQuery.refetch();
+      this.queryClient.invalidateQueries({
+        queryKey: ['todos'],
+      });
     },
   }));
 
